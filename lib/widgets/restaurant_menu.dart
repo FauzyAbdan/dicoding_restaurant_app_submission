@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dicoding_restaurant_app_submission/data/restaurant_model.dart';
 import 'package:dicoding_restaurant_app_submission/helpers/randomise_price.dart';
 import 'package:dicoding_restaurant_app_submission/helpers/random_menu_images.dart';
+import 'package:intl/intl.dart';
 
 class RestaurantMenu extends StatelessWidget {
   final Menus menus;
