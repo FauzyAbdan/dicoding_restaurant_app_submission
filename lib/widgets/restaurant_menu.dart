@@ -20,7 +20,7 @@ class RestaurantMenu extends StatelessWidget {
             physics: const ScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, crossAxisSpacing: 2, mainAxisSpacing: 2),
-            itemCount: menus.drinks.length,
+            itemCount: menus.foods.length,
             itemBuilder: (context, index) {
               final imagePath = getRandomFoodImage();
 
@@ -55,7 +55,7 @@ class RestaurantMenu extends StatelessWidget {
                               child: Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    menus.drinks[index].name,
+                                    menus.foods[index].name,
                                     maxLines: 2,
                                     overflow: TextOverflow.fade,
                                     softWrap: false,
