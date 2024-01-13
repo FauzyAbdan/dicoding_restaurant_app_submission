@@ -12,16 +12,19 @@ Widget buildRestaurantList(BuildContext context, Restaurant restaurants) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(restaurants.pictureId),
-                ),
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8))),
-            width: 150,
+          Hero(
+            tag: "restaurant_image_${restaurants.pictureId}",
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(restaurants.pictureId),
+                  ),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8))),
+              width: 150,
+            ),
           ),
           Expanded(
             child: Column(

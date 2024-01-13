@@ -39,9 +39,12 @@ class DetailRestaurant extends StatelessWidget {
                     ],
                   ),
                   titlePadding: const EdgeInsets.only(left: 40, bottom: 12),
-                  background: Image(
-                      image: NetworkImage(restaurant.pictureId),
-                      fit: BoxFit.cover),
+                  background: Hero(
+                    tag: "restaurant_image_${restaurant.pictureId}",
+                    child: Image(
+                        image: NetworkImage(restaurant.pictureId),
+                        fit: BoxFit.cover),
+                  ),
                 )),
           ];
         },
