@@ -32,7 +32,8 @@ Widget buildRestaurantList(BuildContext context, Restaurant restaurants) {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 10.0),
+                  padding:
+                      const EdgeInsets.only(top: 10, bottom: 6, left: 10.0),
                   child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -57,7 +58,7 @@ Widget buildRestaurantList(BuildContext context, Restaurant restaurants) {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, bottom: 10),
+                  padding: const EdgeInsets.only(top: 8, left: 8),
                   child: Align(
                       alignment: Alignment.bottomLeft,
                       child: RestaurantRating(rating: restaurants.rating)),

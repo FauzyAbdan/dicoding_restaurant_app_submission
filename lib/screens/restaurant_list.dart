@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
+import 'package:dicoding_restaurant_app_submission/data/restaurant_data_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:dicoding_restaurant_app_submission/widgets/shimmer_loading_list_tile.dart';
 import 'package:dicoding_restaurant_app_submission/data/restaurant_model.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_list_tile.dart';
 import 'package:dicoding_restaurant_app_submission/helpers/random_restaurant_of_the_month.dart';
@@ -68,30 +68,17 @@ class RestaurantList extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Text("Error loading restaurants: ${snapshot.error}");
           } else {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                      height:
-                          10), // Tambahkan jarak antara indicator dan tulisan
-                  Text("Mohon tunggu! Data sedang dimuat"),
-                ],
-              ),
+            return Center(
+              child: ListView.separated(
+                  itemCount: 6,
+                  itemBuilder: (context, index) {
+                    return shimmerLoadingRestaurantList();
+                  },
+                  separatorBuilder: (_, __) => const SizedBox()),
             );
           }
         },
       ),
     ));
   }
-}
-
-Future<List<Restaurant>> fetchRestaurants() async {
-  await Future.delayed(const Duration(seconds: 3));
-  String jsonString =
-      await rootBundle.loadString('assets/local_restaurant.json');
-  final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
-  final restaurantsList = jsonData['restaurants'] as List;
-  return Restaurant.fromJsonList(restaurantsList);
 }
