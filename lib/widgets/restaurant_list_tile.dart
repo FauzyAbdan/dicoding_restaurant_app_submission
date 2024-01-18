@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:dicoding_restaurant_app_submission/data/restaurant_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dicoding_restaurant_app_submission/data/restaurant_list_model.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_rating.dart';
+import 'package:flutter/material.dart';
 
 Widget buildRestaurantList(BuildContext context, Restaurant restaurants) {
+  String imageUrl =
+      'https://restaurant-api.dicoding.dev/images/small/${restaurants.pictureId}';
   return Padding(
     padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4),
     child: Container(
@@ -16,13 +19,15 @@ Widget buildRestaurantList(BuildContext context, Restaurant restaurants) {
             tag: "restaurant_image_${restaurants.pictureId}",
             child: Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(restaurants.pictureId),
-                  ),
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomLeft: Radius.circular(8))),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(imageUrl),
+                ),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  bottomLeft: Radius.circular(8),
+                ),
+              ),
               width: 150,
             ),
           ),
@@ -57,11 +62,23 @@ Widget buildRestaurantList(BuildContext context, Restaurant restaurants) {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 8),
-                  child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: RestaurantRating(rating: restaurants.rating)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                      child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: RestaurantRating(rating: restaurants.rating)),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8.0, right: 8.0),
+                      child: Icon(
+                        Icons.bookmark_outline,
+                        color: Colors.amber,
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),

@@ -1,7 +1,7 @@
+import 'package:dicoding_restaurant_app_submission/helpers/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:dicoding_restaurant_app_submission/data/restaurant_model.dart';
 import 'package:dicoding_restaurant_app_submission/screens/restaurant_list.dart';
-import 'package:dicoding_restaurant_app_submission/screens/restaurant_detail.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,21 +12,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Dicoding Restaurant App Submission 1',
+      title: 'Dicoding Restaurant App Submission 2',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         useMaterial3: true,
       ),
-      home: RestaurantList(),
-      routes: {
-        // '/': (context) => RestaurantList(),
-        '/detail': (context) => DetailRestaurant(
-              restaurant:
-                  ModalRoute.of(context)!.settings.arguments as Restaurant,
-            )
-      },
+      home: const Scaffold(
+        body: RestaurantList(),
+      ),
+      getPages: [
+        Routes.home,
+        Routes.detail,
+        Routes.bookmark,
+        Routes.search,
+      ],
     );
   }
 }

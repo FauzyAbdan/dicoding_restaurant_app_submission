@@ -1,20 +1,19 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:dicoding_restaurant_app_submission/data/restaurant_model.dart';
-import 'package:dicoding_restaurant_app_submission/helpers/randomise_price.dart';
+import 'package:dicoding_restaurant_app_submission/data/restaurant_detail_model.dart';
 import 'package:dicoding_restaurant_app_submission/helpers/random_menu_images.dart';
+import 'package:dicoding_restaurant_app_submission/helpers/randomise_price.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 class RestaurantMenu extends StatelessWidget {
   final Menus menus;
-
   const RestaurantMenu({Key? key, required this.menus}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Makanan", style: TextStyle(fontSize: 20)),
+        const Text("Makanan", style: TextStyle(fontSize: 18)),
         GridView.builder(
             shrinkWrap: true,
             physics: const ScrollPhysics(),
@@ -86,7 +85,7 @@ class RestaurantMenu extends StatelessWidget {
               );
             }),
         const SizedBox(height: 10),
-        const Text("Minuman", style: TextStyle(fontSize: 20)),
+        const Text("Minuman", style: TextStyle(fontSize: 18)),
         GridView.builder(
             shrinkWrap: true,
             physics: const ScrollPhysics(),
