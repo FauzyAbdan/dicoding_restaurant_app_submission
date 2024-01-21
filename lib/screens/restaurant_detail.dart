@@ -1,13 +1,13 @@
 //restaurant_detail.dart
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dicoding_restaurant_app_submission/data/restaurant_api_service.dart';
-import 'package:dicoding_restaurant_app_submission/data/restaurant_detail_model.dart';
+import 'package:dicoding_restaurant_app_submission/controllers/restaurant_detail_controller.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/error_loading_restaurant.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_category.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_menu.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_rating.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_review.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DetailRestaurant extends StatefulWidget {
   final String restaurantId;
@@ -21,30 +21,40 @@ class DetailRestaurant extends StatefulWidget {
 }
 
 class _DetailRestaurantState extends State<DetailRestaurant> {
-  final RestaurantApiService _apiService = RestaurantApiService();
-  late Future<RestaurantDetail> _restaurantDetail;
+  final RestaurantDetailController _restaurantDetailController =
+      Get.put(RestaurantDetailController());
+
   late String imageURL;
 
   @override
   void initState() {
     super.initState();
-    _restaurantDetail = _apiService.fetchRestaurantDetails(widget.restaurantId);
+    // _restaurantDetail = _apiService.fetchRestaurantDetails(widget.restaurantId);
+    _restaurantDetailController.fetchRestaurantDetails(widget.restaurantId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<RestaurantDetail>(
-        future: _restaurantDetail,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      body: Obx(
+        () {
+          final restaurantDetail = _restaurantDetailController.restaurantDetail;
+
+          if (_restaurantDetailController.hasError) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: ErrorLoadingRestaurant()),
+                  ],
+                ),
+              ),
+            );
+          } else if (restaurantDetail == null) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const ErrorLoadingRestaurant();
-          } else if (!snapshot.hasData) {
-            return const Text('No data available');
           } else {
-            final restaurantDetail = snapshot.data!;
             final imageURL =
                 'https://restaurant-api.dicoding.dev/images/medium/${restaurantDetail.pictureId}';
             return NestedScrollView(

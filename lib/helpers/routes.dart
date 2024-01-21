@@ -16,10 +16,10 @@ class Routes {
   );
   static final search = GetPage(
     name: '/search',
-    page: () => const RestaurantSearch(),
+    page: () => RestaurantSearch(),
   );
   static final bookmark = GetPage(
-    name: '/search',
+    name: '/bookmarked',
     page: () => const RestaurantBookmarked(),
   );
 }

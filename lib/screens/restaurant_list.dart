@@ -1,9 +1,8 @@
 //restaurant_list.dart
 
-import 'package:dicoding_restaurant_app_submission/data/restaurant_api_service.dart';
-import 'package:dicoding_restaurant_app_submission/data/restaurant_list_model.dart';
+import 'package:dicoding_restaurant_app_submission/controllers/restaurant_list_controller.dart';
 import 'package:dicoding_restaurant_app_submission/helpers/random_restaurant_of_the_month.dart';
-import 'package:dicoding_restaurant_app_submission/screens/restaurant_search.dart';
+
 import 'package:dicoding_restaurant_app_submission/widgets/bottom_navigation_bar.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/error_loading_restaurant.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_list_tile.dart';
@@ -19,19 +18,11 @@ class RestaurantList extends StatefulWidget {
 }
 
 class RestaurantListState extends State<RestaurantList> {
-  final _apiService = RestaurantApiService();
-  late Future<List<Restaurant>> _restaurants;
-
-  @override
-  void initState() {
-    super.initState();
-    _restaurants = _apiService.fetchRestaurants();
-  }
+  final RestaurantListController _restaurantListController =
+      Get.put(RestaurantListController());
 
   Future<void> _refreshData() async {
-    setState(() {
-      _restaurants = RestaurantApiService().fetchRestaurants();
-    });
+    await _restaurantListController.fetchRestaurants();
   }
 
   @override
@@ -52,7 +43,7 @@ class RestaurantListState extends State<RestaurantList> {
                   icon: const Icon(Icons.search),
                   tooltip: 'Cari restoran',
                   onPressed: () {
-                    Get.to(() => const RestaurantSearch());
+                    Get.toNamed('/search');
                   },
                 ),
               ],
@@ -63,18 +54,30 @@ class RestaurantListState extends State<RestaurantList> {
                 ),
                 titlePadding: const EdgeInsets.only(left: 30, bottom: 16),
                 background: Image(
-                    image: AssetImage(getRandomImage()), fit: BoxFit.cover),
+                  image: AssetImage(getRandomImage()),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ];
         },
         body: RefreshIndicator(
           onRefresh: _refreshData,
-          child: FutureBuilder<List<Restaurant>>(
-            future: _restaurants,
-            initialData: null,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+          child: Obx(
+            () {
+              if (_restaurantListController.hasError) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(child: ErrorLoadingRestaurant()),
+                      ],
+                    ),
+                  ),
+                );
+              } else if (_restaurantListController.restaurants.isEmpty) {
                 return Center(
                   child: ListView.separated(
                     itemCount: 6,
@@ -84,14 +87,15 @@ class RestaurantListState extends State<RestaurantList> {
                     separatorBuilder: (_, __) => const SizedBox(),
                   ),
                 );
-              } else if (snapshot.hasData && snapshot.data != null) {
+              } else {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
+                    itemCount: _restaurantListController.restaurants.length,
                     itemBuilder: (context, index) {
-                      final restaurant = snapshot.data![index];
+                      final restaurant =
+                          _restaurantListController.restaurants[index];
                       return GestureDetector(
                         onTap: () {
                           Get.toNamed('detail', arguments: restaurant.id);
@@ -99,26 +103,6 @@ class RestaurantListState extends State<RestaurantList> {
                         child: buildRestaurantList(context, restaurant),
                       );
                     },
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return const Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(child: ErrorLoadingRestaurant()),
-                    ],
-                  ),
-                );
-              } else {
-                return Center(
-                  child: ListView.separated(
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return shimmerLoadingRestaurantList();
-                    },
-                    separatorBuilder: (_, __) => const SizedBox(),
                   ),
                 );
               }

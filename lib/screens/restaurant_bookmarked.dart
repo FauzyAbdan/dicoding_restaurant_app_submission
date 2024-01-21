@@ -7,18 +7,19 @@ class RestaurantBookmarked extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.book_outlined,
-              color: Colors.red,
+              size: 40,
             ),
-            SizedBox(height: 16),
             Text(
-              'Your bookmarked restaurants will be displayed here.',
+              'Restaurant favoritmu akan tampil disini saat kamu menyimpannya.',
               style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

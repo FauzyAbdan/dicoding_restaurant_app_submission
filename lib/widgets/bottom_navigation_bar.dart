@@ -30,7 +30,7 @@ class CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             Get.offAll(() => const RestaurantList());
             break;
           case 1:
-            Get.offAll(() => const RestaurantSearch());
+            Get.offAll(() => RestaurantSearch());
             break;
           case 2:
             Get.offAll(() => const RestaurantBookmarked());
