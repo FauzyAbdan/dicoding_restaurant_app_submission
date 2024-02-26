@@ -1,13 +1,15 @@
 //restaurant_detail.dart
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dicoding_restaurant_app_submission/controllers/restaurant_detail_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/error_loading_restaurant.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_category.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_menu.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_rating.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_review.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:dicoding_restaurant_app_submission/controllers/restaurant_detail_controller.dart';
+import 'package:dicoding_restaurant_app_submission/data/restaurant_favorite_model.dart';
+import 'package:dicoding_restaurant_app_submission/controllers/restaurant_favorite_controller.dart';
 
 class DetailRestaurant extends StatefulWidget {
   final String restaurantId;
@@ -29,7 +31,7 @@ class _DetailRestaurantState extends State<DetailRestaurant> {
   @override
   void initState() {
     super.initState();
-    // _restaurantDetail = _apiService.fetchRestaurantDetails(widget.restaurantId);
+
     _restaurantDetailController.fetchRestaurantDetails(widget.restaurantId);
   }
 
@@ -74,11 +76,44 @@ class _DetailRestaurantState extends State<DetailRestaurant> {
                             restaurantDetail.name.toUpperCase(),
                             style: const TextStyle(fontSize: 16),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              Icons.bookmark_outline,
-                              color: Colors.amber,
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Obx(
+                              () {
+                                final controller =
+                                    Get.find<RestaurantFavoriteController>();
+                                final isFavorite = controller
+                                    .favoriteRestaurants
+                                    .any((restaurant) =>
+                                        restaurant.id == restaurantDetail.id);
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (isFavorite) {
+                                      controller.removeFromFavorite(
+                                          restaurantDetail.id);
+                                    } else {
+                                      controller.addToFavorite(
+                                        FavoriteRestaurant(
+                                          id: restaurantDetail.id,
+                                          name: restaurantDetail.name,
+                                          description:
+                                              restaurantDetail.description,
+                                          pictureId: restaurantDetail.pictureId,
+                                          city: restaurantDetail.city,
+                                          rating: restaurantDetail.rating,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: Icon(
+                                    isFavorite
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_outline,
+                                    color: Colors.amber,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],

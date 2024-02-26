@@ -1,5 +1,4 @@
 // restaurant_search.dart
-
 import 'package:dicoding_restaurant_app_submission/controllers/restaurant_search_controller.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/bottom_navigation_bar.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/error_loading_restaurant.dart';

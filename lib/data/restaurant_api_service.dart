@@ -7,9 +7,14 @@ import 'package:dicoding_restaurant_app_submission/data/restaurant_review_add_mo
 
 class RestaurantApiService {
   final String baseUrl = 'https://restaurant-api.dicoding.dev';
+  final http.Client client;
+
+  RestaurantApiService({http.Client? client})
+      : client = client ?? http.Client();
 
   Future<List<Restaurant>> fetchRestaurants() async {
     await Future.delayed(const Duration(seconds: 3));
+
     final response = await http.get(Uri.parse('$baseUrl/list'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);

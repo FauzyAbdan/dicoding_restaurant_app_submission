@@ -1,6 +1,7 @@
-import 'package:dicoding_restaurant_app_submission/screens/restaurant_bookmarked.dart';
+import 'package:dicoding_restaurant_app_submission/screens/restaurant_favorite.dart';
 import 'package:dicoding_restaurant_app_submission/screens/restaurant_list.dart';
 import 'package:dicoding_restaurant_app_submission/screens/restaurant_search.dart';
+import 'package:dicoding_restaurant_app_submission/screens/restaurant_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,12 +20,13 @@ class CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
+      selectedItemColor: Theme.of(context).primaryColor,
+      unselectedItemColor: Colors.grey,
       onTap: (index) {
         setState(() {
           _currentIndex = index;
         });
 
-        // Tambahkan navigasi ke halaman yang sesuai di sini
         switch (index) {
           case 0:
             Get.offAll(() => const RestaurantList());
@@ -33,14 +35,19 @@ class CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             Get.offAll(() => RestaurantSearch());
             break;
           case 2:
-            Get.offAll(() => const RestaurantBookmarked());
+            Get.offAll(() => const RestaurantFavorite());
+            break;
+          case 3:
+            Get.offAll(() => const RestaurantSetting(
+                  restaurants: [],
+                ));
             break;
         }
       },
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.list),
-          label: 'List',
+          icon: Icon(Icons.home),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
@@ -48,7 +55,11 @@ class CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.bookmark),
-          label: 'Bookmarked',
+          label: 'Favorite',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Setting',
         ),
       ],
     );

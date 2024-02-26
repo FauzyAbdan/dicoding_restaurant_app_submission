@@ -2,7 +2,6 @@
 
 import 'package:dicoding_restaurant_app_submission/controllers/restaurant_list_controller.dart';
 import 'package:dicoding_restaurant_app_submission/helpers/random_restaurant_of_the_month.dart';
-
 import 'package:dicoding_restaurant_app_submission/widgets/bottom_navigation_bar.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/error_loading_restaurant.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_list_tile.dart';
@@ -90,19 +89,25 @@ class RestaurantListState extends State<RestaurantList> {
               } else {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _restaurantListController.restaurants.length,
-                    itemBuilder: (context, index) {
-                      final restaurant =
-                          _restaurantListController.restaurants[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Get.toNamed('detail', arguments: restaurant.id);
-                        },
-                        child: buildRestaurantList(context, restaurant),
-                      );
-                    },
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            final restaurant =
+                                _restaurantListController.restaurants[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Get.toNamed('detail', arguments: restaurant.id);
+                              },
+                              child: buildRestaurantList(context, restaurant),
+                            );
+                          },
+                          childCount:
+                              _restaurantListController.restaurants.length,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }

@@ -1,12 +1,13 @@
+//restaurant_list_tile.dart
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dicoding_restaurant_app_submission/widgets/restaurant_rating.dart';
-import 'package:dicoding_restaurant_app_submission/data/restaurant_list_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dicoding_restaurant_app_submission/data/restaurant_favorite_model.dart';
 import 'package:dicoding_restaurant_app_submission/controllers/restaurant_favorite_controller.dart';
 
-Widget buildRestaurantList(BuildContext context, Restaurant restaurants) {
+Widget buildFavoriteRestaurantList(
+    BuildContext context, FavoriteRestaurant restaurants) {
   String imageUrl =
       'https://restaurant-api.dicoding.dev/images/small/${restaurants.pictureId}';
   return Padding(
@@ -102,9 +103,9 @@ Widget buildRestaurantList(BuildContext context, Restaurant restaurants) {
                             },
                             child: Icon(
                               isFavorite
-                                  ? Icons.bookmark
+                                  ? Icons.delete
                                   : Icons.bookmark_outline,
-                              color: Colors.amber,
+                              color: isFavorite ? Colors.red : Colors.amber,
                             ),
                           );
                         },
